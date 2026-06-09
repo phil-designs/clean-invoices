@@ -1,0 +1,451 @@
+/* -----------------------------------------------
+   Settings page
+----------------------------------------------- */
+.ci-sett-section {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 16px 20px;
+	margin-bottom: 20px;
+	max-width: 800px;
+}
+
+.ci-sett-section h2 {
+	margin-top: 0;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #e0e0e0;
+	font-size: 14px;
+}
+
+/* -----------------------------------------------
+   Invoice editor — details table
+----------------------------------------------- */
+.ci-details-table th {
+	width: 160px;
+	padding: 8px 10px 8px 0;
+	font-weight: 600;
+}
+
+.ci-details-table td {
+	padding: 6px 0;
+}
+
+.ci-small-link {
+	font-size: 12px;
+	margin-left: 8px;
+	color: #2271b1;
+	text-decoration: none;
+}
+
+.ci-small-link:hover {
+	text-decoration: underline;
+}
+
+/* -----------------------------------------------
+   Line items table
+----------------------------------------------- */
+.ci-items-wrap {
+	padding: 4px 0;
+}
+
+.ci-items-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 12px;
+	font-size: 13px;
+}
+
+.ci-items-table th {
+	background: #f6f7f7;
+	border-bottom: 2px solid #c3c4c7;
+	padding: 7px 8px;
+	text-align: left;
+	font-weight: 600;
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #50575e;
+}
+
+.ci-col-desc   { width: 34%; }
+.ci-col-detail { width: 28%; }
+.ci-col-qty    { width: 8%;  }
+.ci-col-rate   { width: 13%; }
+.ci-col-amount { width: 13%; }
+.ci-col-del    { width: 4%;  }
+
+.ci-items-table th.ci-col-qty,
+.ci-items-table th.ci-col-rate,
+.ci-items-table th.ci-col-amount {
+	text-align: right;
+}
+
+.ci-item-row td {
+	padding: 5px 6px;
+	border-bottom: 1px solid #f0f0f0;
+	vertical-align: middle;
+}
+
+.ci-item-row td:nth-child(3),
+.ci-item-row td:nth-child(4),
+.ci-item-row td:nth-child(5) {
+	text-align: right;
+}
+
+.ci-item-row input[type="text"] {
+	width: 100%;
+	font-size: 13px;
+}
+
+.ci-item-row input[type="number"] {
+	width: 100%;
+	text-align: right;
+	font-size: 13px;
+}
+
+.ci-amount {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.ci-remove-row {
+	color: #d63638 !important;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	padding: 2px 4px;
+}
+
+.ci-remove-row:hover { opacity: 0.7; }
+
+#ci-add-row {
+	margin-bottom: 16px;
+}
+
+/* -----------------------------------------------
+   Totals
+----------------------------------------------- */
+.ci-totals {
+	max-width: 340px;
+	margin-left: auto;
+	border-top: 2px solid #c3c4c7;
+	padding-top: 10px;
+}
+
+.ci-totals-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 4px 0;
+	font-size: 13px;
+	gap: 12px;
+}
+
+.ci-totals-row span:first-child {
+	color: #50575e;
+}
+
+.ci-totals-row--total {
+	border-top: 1px solid #c3c4c7;
+	margin-top: 6px;
+	padding-top: 8px;
+	font-weight: 700;
+	font-size: 15px;
+}
+
+.ci-tax-rate-input,
+.ci-shipping-input {
+	width: 56px !important;
+	text-align: right;
+	font-size: 13px;
+}
+
+/* -----------------------------------------------
+   Actions meta box
+----------------------------------------------- */
+.ci-invoice-number {
+	font-size: 13px;
+	margin: 0 0 8px;
+}
+
+.ci-sent-date {
+	font-size: 12px;
+	color: #646970;
+	margin: 0 0 10px;
+}
+
+.ci-action-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.ci-action-buttons .button {
+	text-align: center;
+}
+
+.ci-action-status {
+	margin-top: 10px;
+	font-size: 12px;
+}
+
+.ci-helper-text {
+	font-size: 12px;
+	color: #646970;
+}
+
+/* -----------------------------------------------
+   Invoice list badges
+----------------------------------------------- */
+.ci-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 10px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+.ci-badge--draft   { background: #e0e0e0; color: #50575e; }
+.ci-badge--sent    { background: #dbeafe; color: #1e40af; }
+.ci-badge--partial { background: #fef3c7; color: #92400e; }
+.ci-badge--paid    { background: #d1fae5; color: #065f46; }
+.ci-badge--overdue { background: #fee2e2; color: #991b1b; }
+
+/* -----------------------------------------------
+   Status colours
+----------------------------------------------- */
+.ci-ok    { color: #00a32a; }
+.ci-error { color: #d63638; }
+.ci-info  { color: #2271b1; }
+
+/* -----------------------------------------------
+   Payment history (invoice editor)
+----------------------------------------------- */
+.ci-payment-history {
+	margin-top: 20px;
+	border-top: 1px solid #e0e0e0;
+	padding-top: 14px;
+}
+
+.ci-payment-history h4 {
+	margin: 0 0 10px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1e1e1e;
+}
+
+.ci-payment-history-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+.ci-payment-history-table th {
+	background: #f6f7f7;
+	border-bottom: 1px solid #c3c4c7;
+	padding: 5px 8px;
+	text-align: left;
+	font-weight: 600;
+	font-size: 11px;
+	color: #50575e;
+	text-transform: uppercase;
+}
+
+.ci-payment-history-table td {
+	padding: 5px 8px;
+	border-bottom: 1px solid #f0f0f0;
+	vertical-align: middle;
+}
+
+.ci-payment-summary {
+	display: flex;
+	gap: 24px;
+	font-size: 12px;
+	color: #50575e;
+	padding-top: 4px;
+}
+
+.ci-payment-summary strong {
+	color: #1e1e1e;
+}
+
+/* -----------------------------------------------
+   Record Payment modal
+----------------------------------------------- */
+.ci-modal-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 100000;
+	align-items: center;
+	justify-content: center;
+}
+
+.ci-modal-overlay.active {
+	display: flex;
+}
+
+.ci-modal {
+	background: #fff;
+	border-radius: 4px;
+	padding: 24px;
+	min-width: 320px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.ci-modal h3 {
+	margin: 0 0 16px;
+}
+
+.ci-modal label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.ci-modal input,
+.ci-modal select {
+	width: 100%;
+	margin-bottom: 12px;
+}
+
+.ci-modal-footer {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-top: 16px;
+}
+
+/* -----------------------------------------------
+   Time tracker
+----------------------------------------------- */
+.ci-tt-panel {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 20px 24px;
+	max-width: 620px;
+}
+
+.ci-tt-panel-header {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .06em;
+	color: #50575e;
+	margin-bottom: 14px;
+}
+
+.ci-tt-timer-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.ci-tt-timer-row .regular-text {
+	flex: 1;
+	min-width: 0;
+}
+
+.ci-tt-rate-wrap {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	white-space: nowrap;
+}
+
+.ci-tt-dollar,
+.ci-tt-per-hour {
+	color: #50575e;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.ci-tt-rate-wrap .small-text {
+	width: 70px;
+	text-align: right;
+}
+
+.ci-tt-clock-row {
+	text-align: center;
+	margin-bottom: 16px;
+}
+
+#ci-tt-clock {
+	font-size: 48px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	color: #1e1e1e;
+	font-family: monospace;
+	font-variant-numeric: tabular-nums;
+}
+
+#ci-tt-clock.ci-tt-clock--running {
+	color: #00a32a;
+}
+
+.ci-tt-btn-row {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+
+.ci-tt-stop-btn {
+	background: #d63638 !important;
+	border-color: #b32d2e !important;
+	color: #fff !important;
+}
+
+.ci-tt-stop-btn:hover:not(:disabled) {
+	background: #b32d2e !important;
+}
+
+.ci-tt-status {
+	text-align: center;
+	margin-top: 12px;
+	min-height: 20px;
+	font-size: 13px;
+}
+
+.ci-tt-log-table td {
+	vertical-align: middle;
+}
+
+.ci-tt-invoice-cell {
+	white-space: nowrap;
+}
+
+.ci-tt-invoice-select {
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+.ci-tt-invoice-select select {
+	width: 100%;
+	min-width: 0;
+}
+
+.ci-tt-invoice-btns {
+	display: flex;
+	gap: 4px;
+}
+
+.ci-tt-editing td {
+	background: #fafafa !important;
+}
+
+.ci-tt-action-cell {
+	white-space: nowrap;
+}
+
+.ci-tt-action-cell .button {
+	margin-right: 4px;
+}

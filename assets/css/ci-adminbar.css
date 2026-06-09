@@ -1,0 +1,25 @@
+/* Clean Invoices — admin bar timer */
+
+#wp-admin-bar-ci-timer > .ab-item {
+	transition: color .15s;
+}
+
+#wp-admin-bar-ci-timer.ci-ab-running > .ab-item {
+	color: #6be678 !important;
+}
+
+#wp-admin-bar-ci-timer-desc .ab-item {
+	font-style: italic;
+	color: #999 !important;
+	cursor: default;
+	pointer-events: none;
+}
+
+#wp-admin-bar-ci-timer-stop .ab-item:hover {
+	background: #7a0000 !important;
+}
+
+/* Hide on small screens where the admin bar collapses */
+@media screen and (max-width: 782px) {
+	#wp-admin-bar-ci-timer { display: none !important; }
+}
