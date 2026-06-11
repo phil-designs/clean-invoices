@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 $type = 'Core';
 $name = 'Helvetica-BoldOblique';
 $up = -100;

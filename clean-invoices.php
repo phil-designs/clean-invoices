@@ -1,12 +1,18 @@
 <?php
 /**
- * Plugin Name: Clean Invoices
- * Plugin URI:  https://phildesigns.com
- * Description: Create, send, and track client invoices from your WordPress dashboard.
- * Version:     1.0.0
- * Author:      Phillip De Vita
- * License:     GPL-2.0-or-later
- * Text Domain: clean-invoices
+ * Plugin Name:       PhilDesigns Clean Invoices
+ * Plugin URI:        https://phildesigns.com
+ * Description:       Create, send, and track client invoices from your WordPress dashboard.
+ * Version:           1.0.0
+ * Author:            PhilDesigns
+ * Author URI:        https://phildesigns.com
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       clean-invoices
+ * Domain Path:       /languages
+ * Requires at least: 6.7
+ * Tested up to:      7.0
+ * Requires PHP:      7.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;

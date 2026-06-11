@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Clean Invoices">
+    <rule ref="WordPress" />
+    <!-- Exclude the bundled third-party FPDF library from PHPCS analysis -->
+    <exclude-pattern>lib/*</exclude-pattern>
+</ruleset>

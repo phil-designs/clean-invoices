@@ -7,6 +7,7 @@ if ( ! current_user_can( 'manage_options' ) ) return;
 // -------------------------------------------------------
 global $wpdb;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 $available_years = array_filter( $wpdb->get_col( $wpdb->prepare(
 	"SELECT DISTINCT YEAR(meta_value)
 	 FROM {$wpdb->postmeta}
@@ -16,8 +17,9 @@ $available_years = array_filter( $wpdb->get_col( $wpdb->prepare(
 	'_ci_invoice_date',
 	'ci_invoice'
 ) ) );
+// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-$current_year = intval( $_GET['ci_year'] ?? gmdate( 'Y' ) );
+$current_year = intval( $_GET['ci_year'] ?? gmdate( 'Y' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only year filter for display.
 if ( ! in_array( $current_year, $available_years, false ) && ! empty( $available_years ) ) {
 	$current_year = (int) reset( $available_years );
 }
@@ -63,7 +65,7 @@ foreach ( $invoices as $inv ) {
 	$total_collected   += $collected;
 	$total_outstanding += $balance;
 
-	$month = $inv_date ? (int) date( 'n', strtotime( $inv_date ) ) : 0;
+	$month = $inv_date ? (int) wp_date( 'n', strtotime( $inv_date ) ) : 0;
 	if ( $month >= 1 && $month <= 12 ) {
 		$monthly[ $month ]['invoiced']    = ( $monthly[ $month ]['invoiced']    ?? 0.0 ) + $total;
 		$monthly[ $month ]['collected']   = ( $monthly[ $month ]['collected']   ?? 0.0 ) + $collected;
@@ -101,7 +103,7 @@ function ci_dash_money( float $n ): string {
 	return '$' . number_format( $n, 2 );
 }
 function ci_dash_date( string $d ): string {
-	return $d ? date( 'M j, Y', strtotime( $d ) ) : '—';
+	return $d ? (string) wp_date( 'M j, Y', strtotime( $d ) ) : '—';
 }
 
 $month_names = [ 1 => 'January', 'February', 'March', 'April', 'May', 'June',

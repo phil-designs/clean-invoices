@@ -106,11 +106,11 @@ class CI_CPT {
 				break;
 			case 'ci_date':
 				$d = get_post_meta( $id, '_ci_invoice_date', true );
-				echo $d ? esc_html( date( 'M j, Y', strtotime( $d ) ) ) : '—';
+				echo $d ? esc_html( wp_date( 'M j, Y', strtotime( $d ) ) ) : '—';
 				break;
 			case 'ci_due':
 				$d = get_post_meta( $id, '_ci_due_date', true );
-				echo $d ? esc_html( date( 'M j, Y', strtotime( $d ) ) ) : '—';
+				echo $d ? esc_html( wp_date( 'M j, Y', strtotime( $d ) ) ) : '—';
 				break;
 			case 'ci_total':
 				$t = get_post_meta( $id, '_ci_total', true );
@@ -190,8 +190,8 @@ class CI_CPT {
 	public function invoice_filters( string $post_type ): void {
 		if ( $post_type !== 'ci_invoice' ) return;
 
-		$current_year   = intval( $_GET['ci_year'] ?? 0 );
-		$current_status = sanitize_key( $_GET['ci_status'] ?? '' );
+		$current_year   = intval( $_GET['ci_year'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin filter, no data written.
+		$current_status = sanitize_key( $_GET['ci_status'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin filter.
 
 		// Year dropdown
 		$years = $this->get_invoice_years();
@@ -222,6 +222,7 @@ class CI_CPT {
 
 		$meta = [];
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only GET params for admin list filtering; no data is written.
 		if ( ! empty( $_GET['ci_year'] ) ) {
 			$y    = intval( $_GET['ci_year'] );
 			$meta[] = [
@@ -243,6 +244,7 @@ class CI_CPT {
 				'value' => intval( $_GET['ci_client_id'] ),
 			];
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		if ( $meta ) {
 			$query->set( 'meta_query', array_merge( [ 'relation' => 'AND' ], $meta ) );
@@ -265,6 +267,7 @@ class CI_CPT {
 
 	private function get_invoice_years(): array {
 		global $wpdb;
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$rows = $wpdb->get_col( $wpdb->prepare(
 			"SELECT DISTINCT YEAR(meta_value) FROM {$wpdb->postmeta}
 			 JOIN {$wpdb->posts} ON post_id = ID
@@ -272,6 +275,7 @@ class CI_CPT {
 			 ORDER BY 1 DESC",
 			'_ci_invoice_date', 'ci_invoice'
 		) );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return array_filter( $rows );
 	}
 }

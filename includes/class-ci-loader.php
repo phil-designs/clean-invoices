@@ -77,7 +77,7 @@ class CI_Loader {
 			echo '<div class="notice notice-warning"><p><strong>Clean Invoices:</strong> PDF library not installed — PDF and email features unavailable. <a href="' . esc_url( $url ) . '">Install automatically</a>.</p></div>';
 		}
 
-		$status = sanitize_key( $_GET['ci_notice'] ?? '' );
+		$status = sanitize_key( $_GET['ci_notice'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice flag for display only.
 		if ( $status === 'sent' )      echo '<div class="notice notice-success is-dismissible"><p>Invoice sent successfully.</p></div>';
 		if ( $status === 'send_fail' ) echo '<div class="notice notice-error is-dismissible"><p>Failed to send invoice. Check your email settings.</p></div>';
 		if ( $status === 'paid' )      echo '<div class="notice notice-success is-dismissible"><p>Invoice marked as paid.</p></div>';

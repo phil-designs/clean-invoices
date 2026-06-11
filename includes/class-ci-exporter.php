@@ -21,6 +21,7 @@ class CI_Exporter {
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
 		header( 'Pragma: no-cache' );
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		$out = fopen( 'php://output', 'w' );
 		fputcsv( $out, [ 'Invoice #', 'Client', 'Company', 'Date', 'Due Date', 'Subtotal', 'Tax', 'Shipping', 'Total', 'Status', 'Paid Date', 'Payment Method' ] );
 
@@ -43,6 +44,7 @@ class CI_Exporter {
 			] );
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		fclose( $out );
 	}
 }

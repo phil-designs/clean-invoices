@@ -36,7 +36,7 @@ class CI_Invoice_Editor {
 
 		$id           = $post->ID;
 		$client_id    = get_post_meta( $id, '_ci_client_id', true );
-		$inv_date     = get_post_meta( $id, '_ci_invoice_date', true ) ?: date( 'Y-m-d' );
+		$inv_date     = get_post_meta( $id, '_ci_invoice_date', true ) ?: wp_date( 'Y-m-d' );
 		$due_date     = get_post_meta( $id, '_ci_due_date', true );
 		$notes        = get_post_meta( $id, '_ci_notes', true );
 		$status       = get_post_meta( $id, '_ci_status', true ) ?: 'draft';
@@ -123,7 +123,7 @@ class CI_Invoice_Editor {
 					foreach ( $payments as $pmt ) :
 					?>
 					<tr>
-						<td><?php echo esc_html( ! empty( $pmt['date'] ) ? date( 'M j, Y', strtotime( $pmt['date'] ) ) : '—' ); ?></td>
+						<td><?php echo esc_html( ! empty( $pmt['date'] ) ? (string) wp_date( 'M j, Y', strtotime( $pmt['date'] ) ) : '—' ); ?></td>
 						<td><?php echo esc_html( $type_labels[ $pmt['type'] ?? 'payment' ] ?? 'Payment' ); ?></td>
 						<td><?php echo esc_html( '$' . number_format( (float) ( $pmt['amount'] ?? 0 ), 2 ) ); ?></td>
 						<td><?php echo esc_html( $pmt['method'] ?? '—' ); ?></td>
@@ -229,7 +229,7 @@ class CI_Invoice_Editor {
 		<?php
 		endif;
 
-		if ( $sent ) echo '<p class="ci-sent-date">Last sent: ' . esc_html( date( 'M j, Y', strtotime( $sent ) ) ) . '</p>';
+		if ( $sent ) echo '<p class="ci-sent-date">Last sent: ' . esc_html( (string) wp_date( 'M j, Y', strtotime( $sent ) ) ) . '</p>';
 
 		if ( $id && $id > 0 && get_post_status( $id ) !== 'auto-draft' ) :
 			$pdf_url     = wp_nonce_url( admin_url( 'admin-post.php?action=ci_download_pdf&post_id=' . $id ), 'ci_pdf_' . $id );
@@ -300,6 +300,7 @@ class CI_Invoice_Editor {
 		}
 
 		if ( isset( $_POST['ci_line_items'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON data; each field is sanitized individually in the array_map below.
 			$raw   = wp_unslash( $_POST['ci_line_items'] );
 			$items = json_decode( sanitize_text_field( $raw ), true );
 			if ( is_array( $items ) ) {

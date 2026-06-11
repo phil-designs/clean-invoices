@@ -28,7 +28,7 @@ class CI_PDF {
 		$output = $pdf->Output( 'S' );
 
 		foreach ( $this->temp_files as $f ) {
-			if ( file_exists( $f ) ) @unlink( $f );
+			if ( file_exists( $f ) ) wp_delete_file( $f );
 		}
 
 		return $output;
@@ -118,7 +118,7 @@ class CI_PDF {
 
 		// --- Logo (top left) ---
 		if ( $inv['logo_path'] ) {
-			$size = @getimagesize( $inv['logo_path'] );
+			$size = wp_getimagesize( $inv['logo_path'] );
 			if ( $size && $size[0] > 0 && $size[1] > 0 ) {
 				$max_w = 50; // mm
 				$max_h = 28; // mm
@@ -147,8 +147,8 @@ class CI_PDF {
 		// --- Invoice details (right column, below heading) ---
 		$details = array_filter( [
 			'Invoice #' => $inv['invoice_number'],
-			'Date'      => $inv['invoice_date'] ? date( 'F j, Y', strtotime( $inv['invoice_date'] ) ) : '',
-			'Due'       => $inv['due_date'] ? date( 'F j, Y', strtotime( $inv['due_date'] ) ) : '',
+			'Date'      => $inv['invoice_date'] ? (string) wp_date( 'F j, Y', strtotime( $inv['invoice_date'] ) ) : '',
+			'Due'       => $inv['due_date'] ? (string) wp_date( 'F j, Y', strtotime( $inv['due_date'] ) ) : '',
 		] );
 		$ry = 28;
 		foreach ( $details as $label => $value ) {
@@ -402,7 +402,7 @@ class CI_PDF {
 			foreach ( $inv['payments'] as $pmt ) {
 				$label = $type_labels[ $pmt['type'] ?? 'payment' ] ?? 'Payment';
 				$parts = array_filter( [
-					! empty( $pmt['date'] )   ? date( 'M j, Y', strtotime( $pmt['date'] ) ) : '',
+					! empty( $pmt['date'] )   ? (string) wp_date( 'M j, Y', strtotime( $pmt['date'] ) ) : '',
 					! empty( $pmt['method'] ) ? $pmt['method'] : '',
 				] );
 				$label .= $parts ? ' (' . implode( ' / ', $parts ) . ')' : '';
@@ -606,7 +606,7 @@ class CI_PDF {
 			} elseif ( preg_match( '/^<\/(?:strong|b)/i', $part ) ) {
 				$bold = false;
 			} else {
-				$text = strip_tags( $part );
+				$text = wp_strip_all_tags( $part );
 				$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 				$text = (string) iconv( 'UTF-8', 'ISO-8859-1//TRANSLIT//IGNORE', $text );
 				if ( trim( $text ) !== '' ) {

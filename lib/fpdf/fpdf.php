@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable -- Third-party library; not subject to WordPress Coding Standards.
 /*******************************************************************************
 * FPDF                                                                         *
 *                                                                              *

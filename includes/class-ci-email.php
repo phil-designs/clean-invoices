@@ -128,7 +128,7 @@ class CI_Email {
 			'{total}'           => '$' . number_format( $total, 2 ),
 			'{amount_paid}'     => '$' . number_format( $amt_paid ?: $total, 2 ),
 			'{balance_due}'     => '$' . number_format( $balance, 2 ),
-			'{paid_date}'       => $paid_date ? date( 'F j, Y', strtotime( $paid_date ) ) : '',
+			'{paid_date}'       => $paid_date ? wp_date( 'F j, Y', strtotime( $paid_date ) ) : '',
 			'{payment_method}'  => $method,
 			'{client_name}'     => get_the_title( $client_id ),
 			'{company_name}'    => get_option( 'ci_company_name', get_bloginfo( 'name' ) ),

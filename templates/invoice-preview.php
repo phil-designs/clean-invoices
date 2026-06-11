@@ -46,7 +46,7 @@ $ci_inv_status  = get_post_meta( $post_id, '_ci_status', true );
 $ci_balance_due = ( $ci_inv_status === 'paid' && empty( $ci_payments ) ) ? 0.0 : max( 0.0, $inv['total'] - $ci_amount_paid );
 
 function ci_fmt_date( string $d ): string {
-	return $d ? date( 'F j, Y', strtotime( $d ) ) : '';
+	return $d ? (string) wp_date( 'F j, Y', strtotime( $d ) ) : '';
 }
 function ci_money( float $n ): string {
 	return '$' . number_format( $n, 2 );
