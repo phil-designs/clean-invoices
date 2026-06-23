@@ -3,7 +3,7 @@ Contributors: phildesigns
 Tags: invoices, billing, clients, time-tracking, pdf
 Requires at least: 6.7
 Tested up to: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -80,10 +80,27 @@ Invoice number, client, date, due date, line items, tax, shipping, total, status
 
 == Changelog ==
 
+= 1.2.0 =
+* Added Hourly vs Flat Rate type toggle per line item — click the icon in the line items table to switch between billing modes.
+* Flat Rate items display "Flat Rate" in the Qty/Rate columns on the browser preview and generated PDF.
+* Added Hours column to the invoice admin list showing total billable hours at a glance.
+* Added Total Hours row in the Invoice Details panel on the edit screen; row is hidden automatically when no hourly items are present.
+
+= 1.1.0 =
+* Added Time Tracker with start/stop timer, persistent state, inline editing, and entry merging.
+* Added admin bar quick-timer accessible from any page in the dashboard or front end.
+* Added ability to add tracked time directly to an invoice as a line item.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds Hourly/Flat Rate line item types, a live hours total in the invoice editor, and a Hours column in the invoice list.
+
+= 1.1.0 =
+Adds the Time Tracker, admin bar quick-timer, and add-to-invoice workflow.
 
 = 1.0.0 =
 Initial release.

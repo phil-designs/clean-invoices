@@ -3,7 +3,7 @@
  * Plugin Name:       PhilDesigns Clean Invoices
  * Plugin URI:        https://phildesigns.com
  * Description:       Create, send, and track client invoices from your WordPress dashboard.
- * Version:           1.0.0
+ * Version:           1.2.0
  * Author:            PhilDesigns
  * Author URI:        https://phildesigns.com
  * License:           GPL-2.0-or-later
@@ -17,7 +17,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'CI_VERSION', '1.0.0' );
+define( 'CI_VERSION', '1.2.0' );
 define( 'CI_DIR',     plugin_dir_path( __FILE__ ) );
 define( 'CI_URL',     plugin_dir_url( __FILE__ ) );
 define( 'CI_FILE',    __FILE__ );
