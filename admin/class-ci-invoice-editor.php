@@ -40,7 +40,8 @@ class CI_Invoice_Editor {
 		$due_date     = get_post_meta( $id, '_ci_due_date', true );
 		$notes        = get_post_meta( $id, '_ci_notes', true );
 		$line_items   = json_decode( get_post_meta( $id, '_ci_line_items', true ) ?: '[]', true );
-		$total_hours  = array_sum( array_column( $line_items, 'quantity' ) );
+		$hourly_items = array_filter( $line_items, fn( $item ) => ( $item['type'] ?? 'hourly' ) !== 'flat' );
+		$total_hours  = array_sum( array_column( $hourly_items, 'quantity' ) );
 		$status       = get_post_meta( $id, '_ci_status', true ) ?: 'draft';
 		$paid_date    = get_post_meta( $id, '_ci_paid_date', true );
 		$paid_method  = get_post_meta( $id, '_ci_payment_method', true );
@@ -69,9 +70,9 @@ class CI_Invoice_Editor {
 				<th><label for="ci_due_date">Due Date</label></th>
 				<td><input type="date" id="ci_due_date" name="ci_due_date" value="<?php echo esc_attr( $due_date ); ?>"></td>
 			</tr>
-			<tr>
+			<tr id="ci-hours-row"<?php echo $total_hours <= 0 ? ' style="display:none;"' : ''; ?>>
 				<th>Total Hours</th>
-				<td><?php echo $total_hours > 0 ? esc_html( rtrim( rtrim( number_format( $total_hours, 2 ), '0' ), '.' ) ) : '—'; ?></td>
+				<td id="ci-hours-value"><?php echo esc_html( rtrim( rtrim( number_format( $total_hours, 2 ), '0' ), '.' ) ); ?></td>
 			</tr>
 			<tr>
 				<th><label for="ci_status">Status</label></th>
@@ -170,6 +171,7 @@ class CI_Invoice_Editor {
 					<tr>
 						<th class="ci-col-desc">Description</th>
 						<th class="ci-col-detail">Sub-detail</th>
+						<th class="ci-col-type">Type</th>
 						<th class="ci-col-qty">Qty</th>
 						<th class="ci-col-rate">Rate</th>
 						<th class="ci-col-amount">Amount</th>
@@ -177,11 +179,21 @@ class CI_Invoice_Editor {
 					</tr>
 				</thead>
 				<tbody id="ci-items-body">
-					<?php foreach ( $items as $item ) : ?>
+					<?php foreach ( $items as $item ) :
+						$item_type = in_array( $item['type'] ?? 'hourly', [ 'hourly', 'flat' ], true ) ? ( $item['type'] ?? 'hourly' ) : 'hourly';
+						$is_hourly = $item_type === 'hourly';
+					?>
 					<tr class="ci-item-row">
 						<td><input type="text" class="ci-desc" value="<?php echo esc_attr( $item['description'] ?? '' ); ?>" placeholder="Description"></td>
 						<td><input type="text" class="ci-detail" value="<?php echo esc_attr( $item['detail'] ?? '' ); ?>" placeholder="Optional sub-detail"></td>
-						<td><input type="number" class="ci-qty" value="<?php echo esc_attr( $item['quantity'] ?? 1 ); ?>" min="0" step="any"></td>
+						<td>
+							<button type="button" class="ci-type-toggle" data-type="<?php echo esc_attr( $item_type ); ?>">
+								<span class="dashicons dashicons-<?php echo $is_hourly ? 'clock' : 'tag'; ?>"></span>
+								<?php echo $is_hourly ? 'Hourly' : 'Flat'; ?>
+							</button>
+							<input type="hidden" class="ci-type" value="<?php echo esc_attr( $item_type ); ?>">
+						</td>
+						<td><input type="number" class="ci-qty" value="<?php echo esc_attr( $item['quantity'] ?? 1 ); ?>" min="0" step="any" <?php echo ! $is_hourly ? 'style="opacity:0;pointer-events:none;"' : ''; ?>></td>
 						<td><input type="number" class="ci-rate" value="<?php echo esc_attr( $item['rate'] ?? '0' ); ?>" min="0" step="0.01" placeholder="0.00"></td>
 						<td class="ci-amount"><?php echo esc_html( number_format( (float) ( $item['amount'] ?? 0 ), 2 ) ); ?></td>
 						<td><button type="button" class="ci-remove-row button-link-delete">&#x2715;</button></td>
@@ -314,6 +326,7 @@ class CI_Invoice_Editor {
 					return [
 						'description' => sanitize_text_field( $item['description'] ?? '' ),
 						'detail'      => sanitize_text_field( $item['detail']      ?? '' ),
+						'type'        => in_array( $item['type'] ?? 'hourly', [ 'hourly', 'flat' ], true ) ? ( $item['type'] ?? 'hourly' ) : 'hourly',
 						'quantity'    => floatval( $item['quantity'] ?? 1 ),
 						'rate'        => floatval( $item['rate']     ?? 0 ),
 						'amount'      => floatval( $item['amount']   ?? 0 ),

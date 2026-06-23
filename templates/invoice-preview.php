@@ -454,7 +454,9 @@ function ci_money( float $n ): string {
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ( (array) $items as $item ) : ?>
+			<?php foreach ( (array) $items as $item ) :
+				$item_type = ( $item['type'] ?? 'hourly' ) === 'flat' ? 'flat' : 'hourly';
+			?>
 			<tr>
 				<td>
 					<div class="ci-item-desc"><?php echo esc_html( $item['description'] ?? '' ); ?></div>
@@ -462,8 +464,8 @@ function ci_money( float $n ): string {
 						<div class="ci-item-detail"><?php echo esc_html( $item['detail'] ); ?></div>
 					<?php endif; ?>
 				</td>
-				<td class="num"><?php echo esc_html( $item['quantity'] ?? 1 ); ?></td>
-				<td class="num"><?php echo esc_html( ci_money( (float) ( $item['rate'] ?? 0 ) ) ); ?></td>
+				<td class="num"><?php echo $item_type === 'flat' ? 'Flat Rate' : esc_html( $item['quantity'] ?? 1 ); ?></td>
+				<td class="num"><?php echo $item_type === 'flat' ? '—' : esc_html( ci_money( (float) ( $item['rate'] ?? 0 ) ) ); ?></td>
 				<td class="num"><?php echo esc_html( ci_money( (float) ( $item['amount'] ?? 0 ) ) ); ?></td>
 			</tr>
 			<?php endforeach; ?>

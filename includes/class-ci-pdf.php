@@ -272,11 +272,12 @@ class CI_PDF {
 		$fill = false;
 
 		foreach ( (array) $inv['line_items'] as $item ) {
-			$desc   = $this->t( $item['description'] ?? '' );
-			$detail = $this->t( $item['detail']      ?? '' );
-			$qty    = $item['quantity'] ?? 1;
-			$rate   = (float) ( $item['rate']   ?? 0 );
-			$amount = (float) ( $item['amount'] ?? 0 );
+			$desc      = $this->t( $item['description'] ?? '' );
+			$detail    = $this->t( $item['detail']      ?? '' );
+			$item_type = ( $item['type'] ?? 'hourly' ) === 'flat' ? 'flat' : 'hourly';
+			$qty       = $item['quantity'] ?? 1;
+			$rate      = (float) ( $item['rate']   ?? 0 );
+			$amount    = (float) ( $item['amount'] ?? 0 );
 
 			// Pre-calculate detail text line count so we can size the row correctly.
 			$detail_lh    = 4.0;
@@ -316,12 +317,14 @@ class CI_PDF {
 			}
 
 			// Numeric columns — vertically centred within the row
-			$num_y = $row_y + ( $row_h - 6 ) / 2;
+			$num_y        = $row_y + ( $row_h - 6 ) / 2;
+			$qty_display  = $item_type === 'flat' ? 'Flat Rate' : (string) $qty;
+			$rate_display = $item_type === 'flat' ? '-' : '$' . number_format( $rate, 2 );
 			$pdf->SetFont( 'Helvetica', '', 9 );
 			$pdf->SetTextColor( 30, 30, 30 );
 			$pdf->SetXY( 15 + $dw, $num_y );
-			$pdf->Cell( $qw, 6, (string) $qty,                     0, 0, 'C' );
-			$pdf->Cell( $rw, 6, '$' . number_format( $rate, 2 ),   0, 0, 'R' );
+			$pdf->Cell( $qw, 6, $qty_display,                      0, 0, 'C' );
+			$pdf->Cell( $rw, 6, $rate_display,                     0, 0, 'R' );
 			$pdf->Cell( $aw, 6, '$' . number_format( $amount, 2 ), 0, 0, 'R' );
 
 			// Advance Y to next row

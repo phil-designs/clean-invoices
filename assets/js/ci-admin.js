@@ -61,6 +61,7 @@ jQuery( function ( $ ) {
 		return '<tr class="ci-item-row">' +
 			'<td><input type="text" class="ci-desc" placeholder="Description"></td>' +
 			'<td><input type="text" class="ci-detail" placeholder="Optional sub-detail"></td>' +
+			'<td><button type="button" class="ci-type-toggle" data-type="hourly"><span class="dashicons dashicons-clock"></span> Hourly</button><input type="hidden" class="ci-type" value="hourly"></td>' +
 			'<td><input type="number" class="ci-qty" value="1" min="0" step="any"></td>' +
 			'<td><input type="number" class="ci-rate" value="0" min="0" step="0.01" placeholder="0.00"></td>' +
 			'<td class="ci-amount">$0.00</td>' +
@@ -74,6 +75,26 @@ jQuery( function ( $ ) {
 
 	$( '#ci-items-body' ).on( 'click', '.ci-remove-row', function () {
 		$( this ).closest( 'tr' ).remove();
+		recalc();
+	} );
+
+	$( '#ci-items-body' ).on( 'click', '.ci-type-toggle', function () {
+		var $btn  = $( this );
+		var $row  = $btn.closest( 'tr' );
+		var $type = $row.find( '.ci-type' );
+		var $qty  = $row.find( '.ci-qty' );
+
+		if ( $btn.data( 'type' ) === 'hourly' ) {
+			$btn.data( 'type', 'flat' ).attr( 'data-type', 'flat' )
+				.html( '<span class="dashicons dashicons-tag"></span> Flat' );
+			$type.val( 'flat' );
+			$qty.data( 'prev-qty', $qty.val() ).val( 1 ).css( { opacity: 0, pointerEvents: 'none' } );
+		} else {
+			$btn.data( 'type', 'hourly' ).attr( 'data-type', 'hourly' )
+				.html( '<span class="dashicons dashicons-clock"></span> Hourly' );
+			$type.val( 'hourly' );
+			$qty.val( $qty.data( 'prev-qty' ) || 1 ).css( { opacity: 1, pointerEvents: '' } ).removeData( 'prev-qty' );
+		}
 		recalc();
 	} );
 
@@ -110,16 +131,38 @@ jQuery( function ( $ ) {
 		$( '#ci_total' ).val( total.toFixed( 2 ) );
 
 		serializeItems();
+		updateHoursDisplay();
+	}
+
+	function updateHoursDisplay() {
+		var $row = $( '#ci-hours-row' );
+		if ( ! $row.length ) return;
+		var hours = 0;
+		$( '#ci-items-body .ci-item-row' ).each( function () {
+			if ( $( this ).find( '.ci-type' ).val() !== 'flat' ) {
+				hours += parseFloat( $( this ).find( '.ci-qty' ).val() ) || 0;
+			}
+		} );
+		hours = Math.round( hours * 100 ) / 100;
+		if ( hours > 0 ) {
+			var display = ( hours % 1 === 0 ) ? hours.toString() : hours.toFixed( 2 ).replace( /\.?0+$/, '' );
+			$( '#ci-hours-value' ).text( display );
+			$row.show();
+		} else {
+			$row.hide();
+		}
 	}
 
 	function serializeItems() {
 		var items = [];
 		$( '#ci-items-body .ci-item-row' ).each( function () {
-			var qty  = parseFloat( $( this ).find( '.ci-qty' ).val() )  || 0;
+			var type = $( this ).find( '.ci-type' ).val() || 'hourly';
+			var qty  = type === 'flat' ? 1 : ( parseFloat( $( this ).find( '.ci-qty' ).val() ) || 0 );
 			var rate = parseFloat( $( this ).find( '.ci-rate' ).val() ) || 0;
 			items.push( {
 				description: $( this ).find( '.ci-desc' ).val(),
 				detail:      $( this ).find( '.ci-detail' ).val(),
+				type:        type,
 				quantity:    qty,
 				rate:        rate,
 				amount:      parseFloat( ( qty * rate ).toFixed( 2 ) ),
@@ -130,6 +173,14 @@ jQuery( function ( $ ) {
 
 	// Serialize on form submit
 	$( 'form#post' ).on( 'submit', serializeItems );
+
+	// Restore flat-row state for PHP-rendered existing rows
+	$( '#ci-items-body .ci-item-row' ).each( function () {
+		if ( $( this ).find( '.ci-type' ).val() === 'flat' ) {
+			$( this ).find( '.ci-qty' ).css( { opacity: 0, pointerEvents: 'none' } );
+		}
+	} );
+	updateHoursDisplay();
 
 	// -------------------------------------------------------
 	// Send invoice (list + edit screens)

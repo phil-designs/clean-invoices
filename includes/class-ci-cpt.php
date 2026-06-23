@@ -114,8 +114,9 @@ class CI_CPT {
 				echo $d ? esc_html( wp_date( 'M j, Y', strtotime( $d ) ) ) : '—';
 				break;
 			case 'ci_hours':
-				$items = json_decode( get_post_meta( $id, '_ci_line_items', true ) ?: '[]', true );
-				$hours = array_sum( array_column( $items, 'quantity' ) );
+				$items        = json_decode( get_post_meta( $id, '_ci_line_items', true ) ?: '[]', true );
+				$hourly_items = array_filter( $items, fn( $item ) => ( $item['type'] ?? 'hourly' ) !== 'flat' );
+				$hours        = array_sum( array_column( $hourly_items, 'quantity' ) );
 				echo $hours > 0 ? esc_html( rtrim( rtrim( number_format( $hours, 2 ), '0' ), '.' ) ) : '—';
 				break;
 			case 'ci_total':
