@@ -91,6 +91,7 @@ class CI_CPT {
 			'ci_client'       => 'Client',
 			'ci_date'         => 'Date',
 			'ci_due'          => 'Due',
+			'ci_hours'        => 'Hours',
 			'ci_total'        => 'Total',
 			'ci_status'       => 'Status',
 			'ci_actions'      => 'Actions',
@@ -111,6 +112,11 @@ class CI_CPT {
 			case 'ci_due':
 				$d = get_post_meta( $id, '_ci_due_date', true );
 				echo $d ? esc_html( wp_date( 'M j, Y', strtotime( $d ) ) ) : '—';
+				break;
+			case 'ci_hours':
+				$items = json_decode( get_post_meta( $id, '_ci_line_items', true ) ?: '[]', true );
+				$hours = array_sum( array_column( $items, 'quantity' ) );
+				echo $hours > 0 ? esc_html( rtrim( rtrim( number_format( $hours, 2 ), '0' ), '.' ) ) : '—';
 				break;
 			case 'ci_total':
 				$t = get_post_meta( $id, '_ci_total', true );

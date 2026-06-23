@@ -39,6 +39,8 @@ class CI_Invoice_Editor {
 		$inv_date     = get_post_meta( $id, '_ci_invoice_date', true ) ?: wp_date( 'Y-m-d' );
 		$due_date     = get_post_meta( $id, '_ci_due_date', true );
 		$notes        = get_post_meta( $id, '_ci_notes', true );
+		$line_items   = json_decode( get_post_meta( $id, '_ci_line_items', true ) ?: '[]', true );
+		$total_hours  = array_sum( array_column( $line_items, 'quantity' ) );
 		$status       = get_post_meta( $id, '_ci_status', true ) ?: 'draft';
 		$paid_date    = get_post_meta( $id, '_ci_paid_date', true );
 		$paid_method  = get_post_meta( $id, '_ci_payment_method', true );
@@ -66,6 +68,10 @@ class CI_Invoice_Editor {
 			<tr>
 				<th><label for="ci_due_date">Due Date</label></th>
 				<td><input type="date" id="ci_due_date" name="ci_due_date" value="<?php echo esc_attr( $due_date ); ?>"></td>
+			</tr>
+			<tr>
+				<th>Total Hours</th>
+				<td><?php echo $total_hours > 0 ? esc_html( rtrim( rtrim( number_format( $total_hours, 2 ), '0' ), '.' ) ) : '—'; ?></td>
 			</tr>
 			<tr>
 				<th><label for="ci_status">Status</label></th>
